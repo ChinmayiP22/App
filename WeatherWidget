@@ -1,0 +1,38 @@
+npx create-react-app personal-dashboard
+
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+const WeatherWidget = () => {
+  const [weather, setWeather] = useState({});
+  const [location, setLocation] = useState('London'); // hardcoded location for simplicity
+
+  useEffect(() => {
+    const apiKey = 'YOUR_OPENWEATHERMAP_API_KEY';
+    const url = `http://openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${apiKey}`;
+
+    axios.get(url)
+      .then(response => {
+        setWeather(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+        setWeather({ error: 'Failed to fetch weather data' });
+      });
+  }, [location]);
+
+  return (
+    <div>
+      {weather.error ? (
+        <p>{weather.error}</p>
+      ) : (
+        <div>
+          <h2>Current Weather in {location}</h2>
+          <p>Temperature: {weather.main.temp}°C</p>
+          <p>Weather Conditions: {weather.weather[0].description}</p>
+          <img src={`http://openweathermap.org/img/w/${weather.weather[0].icon}.png`} alt="Weather Icon" />
+        </div>
+      )}
+    </div>
+  );
+};
