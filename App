@@ -1,0 +1,13 @@
+import React from 'react';
+import WeatherWidget from './WeatherWidget';
+import NewsHeadlinesWidget from './NewsHeadlinesWidget';
+
+function App() {
+  return (
+    <div className="App">
+      <h1>Personal Dashboard</h1>
+      <WeatherWidget />
+      <NewsHeadlinesWidget />
+    </div>
+  );
+}
