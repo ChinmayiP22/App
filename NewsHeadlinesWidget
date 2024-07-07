@@ -1,0 +1,38 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+const NewsHeadlinesWidget = () => {
+  const [news, setNews] = useState([]);
+  const country = 'us'; // hardcoded country for simplicity
+
+  useEffect(() => {
+    const apiKey = 'YOUR_NEWSAPI_API_KEY';
+    const url = `https://newsapi.org/v2/top-headlines?country=${country}&apiKey=${apiKey}`;
+
+    axios.get(url)
+      .then(response => {
+        setNews(response.data.articles);
+      })
+      .catch(error => {
+        console.error(error);
+        setNews([{ error: 'Failed to fetch news headlines' }]);
+      });
+  }, [country]);
+
+  return (
+    <div>
+      <h2>Top News Headlines in {country}</h2>
+      <ul>
+        {news.map((article, index) => (
+          <li key={index}>
+            <a href={article.url} target="_blank" rel="noopener noreferrer">
+              <h3>{article.title}</h3>
+              <p>Source: {article.source.name}</p>
+              <p>Publish Date: {article.publishedAt}</p>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
